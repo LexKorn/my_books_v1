@@ -5,9 +5,10 @@ const ApiError = require('../error/ApiError');
 class NoteController {
     async create(req, res, next) {
         try {
-            let {name, userId} = req.body;
+            const {id} = req.user;
+            let {name} = req.body;
 
-            const note = await Note.create({name, userId});            
+            const note = await Note.create({name, userId: id});            
             return res.json(note);
 
         } catch(err) {
@@ -17,12 +18,13 @@ class NoteController {
 
     async getAll(req, res, next) {
         try {
+            const {id} = req.user;
             let {limit, page} = req.query;  
             page = page || 1;
             limit = limit || 8;
             let offset = page * limit - limit;
 
-            const notes = await Note.findAndCountAll({limit, offset});
+            const notes = await Note.findAndCountAll({where:{userId: id}, limit, offset});
             return res.json(notes);
 
         } catch(err) {
@@ -33,7 +35,7 @@ class NoteController {
     async getONe(req, res, next) {
         try {
             const {id} = req.params;
-            const note = await Note.findOne({where: {id}});
+            const note = await Note.findOne({where: {userId: req.user.id, id}});
             return res.json(note);
 
         } catch(err) {
@@ -44,7 +46,7 @@ class NoteController {
     async delete(req, res, next) {
         try {
             const {id} = req.params;
-            await Note.destroy({where: {id}});
+            await Note.destroy({where: {userId: req.user.id, id}});
             return res.json('Note was deleted');
 
         } catch(err) {
@@ -56,7 +58,7 @@ class NoteController {
         try {
             const {id} = req.params;
             const {name, link, rating, comment, cover} = req.body;
-            await Note.update({name, link, rating, comment, cover}, {where: {id}});
+            await Note.update({name, link, rating, comment, cover}, {where: {userId: req.user.id, id}});
             return res.json('Note was updated');
 
         } catch(err) {

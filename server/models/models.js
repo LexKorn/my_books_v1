@@ -13,24 +13,24 @@ const Book = sequelize.define('book', {
     link: {type: DataTypes.STRING, allowNull: true},
     rating: {type: DataTypes.INTEGER, defaultValue: 0},
     comment: {type: DataTypes.STRING, allowNull: true},
-    cover: {type: DataTypes.STRING, allowNull: false}
+    cover: {type: DataTypes.STRING, allowNull: true}
 });
 
 const Author = sequelize.define('author', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false},
-    description: {type: DataTypes.STRING, allowNull: false},
-    photo: {type: DataTypes.STRING, allowNull: false}
+    name: {type: DataTypes.STRING, allowNull: false},
+    description: {type: DataTypes.STRING, allowNull: true},
+    photo: {type: DataTypes.STRING, allowNull: true}
 });
 
 const Country = sequelize.define('country', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false}
+    name: {type: DataTypes.STRING, allowNull: false}
 });
 
 const Note = sequelize.define('note', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false}
+    name: {type: DataTypes.STRING, allowNull: false}
 });
 
 
